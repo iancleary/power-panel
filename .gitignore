@@ -1,3 +1,4 @@
 .vscode/
 .devbox/
 target/
+.direnv/
