@@ -1,6 +1,6 @@
 use iced::Settings;
-use iced::pure::widget::{Button, Column, Container, Text};
-use iced::pure::Sandbox;
+use iced::widget::{Button, Column, Container, Text};
+use iced::Sandbox;
 
 fn main() -> Result<(), iced::Error> {
     Counter::run(Settings::default())
@@ -34,7 +34,7 @@ impl Sandbox for Counter {
         }
     }
 
-    fn view(&self) -> iced::pure::Element<Self::Message> {
+    fn view(&self) -> iced::Element<Self::Message> {
         let label = Text::new(format!("Count: {}", self.count));
         let incr = Button::new("Increment").on_press(CounterMessage::Increment);
         let decr = Button::new("Decrement").on_press(CounterMessage::Decrement);
