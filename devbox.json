@@ -1,0 +1,15 @@
+{
+  "packages": [
+    "rustup@latest"
+  ],
+  "shell": {
+    "init_hook": [
+      "rustup default stable"
+    ],
+    "scripts": {
+      "test": [
+        "echo \"Error: no test specified\" && exit 1"
+      ]
+    }
+  }
+}
