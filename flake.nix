@@ -4,6 +4,7 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    rust-overlay.url = "github:oxalica/rust-overlay";
 
     crane = {
       url = "github:ipetkov/crane";
@@ -57,6 +58,16 @@
 
         LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath buildInputs;
         # Extra inputs can be added here
+
+        packages = with pkgs; [
+            rustup
+            openssl
+            pkg-config
+            cargo-deny
+            cargo-edit
+            cargo-watch
+            rust-analyzer
+          ];
       };
     });
 }
