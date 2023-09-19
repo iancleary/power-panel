@@ -1,0 +1,14 @@
+button.restart {
+  background-color: #000;
+  color: red;
+}
+
+button.shutdown {
+  background-color: #000;
+  color: blue;
+}
+
+
+window {
+  background-color: #000;
+}

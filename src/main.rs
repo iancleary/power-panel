@@ -1,35 +1,69 @@
 use std::process::Command;
 use gtk::prelude::*;
-use gtk::{glib, Application, ApplicationWindow, Button};
+use gtk::{glib, Application, ApplicationWindow, Button, CssProvider, IconTheme};
+use gtk::gdk::Display;
 
-const APP_ID: &str = "me.iancleary.power";
+const APP_ID: &str = "me.iancleary.powpow";
 
 fn main() -> glib::ExitCode {
     // Create a new application
     let app = Application::builder().application_id(APP_ID).build();
 
-    // Connect to "activate" signal of `app`
+    // Connect to signals
+    app.connect_startup(|_| load_css());
+    app.connect_startup(|_| load_icons());
     app.connect_activate(build_ui);
 
     // Run the application
     app.run()
 }
 
+fn load_css() {
+    // Load the CSS file and add it to the provider
+    let provider = CssProvider::new();
+    provider.load_from_data(include_str!("style.css"));
+
+    // Add the provider to the default screen
+    gtk::style_context_add_provider_for_display(
+        &Display::default().expect("Could not connect to a display."),
+        &provider,
+        gtk::STYLE_PROVIDER_PRIORITY_APPLICATION,
+    );
+}
+
+fn load_icons() {
+    // Load the icons into the icon theme
+    let icon_theme = IconTheme::for_display(
+        &Display::default().expect("Could not connect to a display.")
+    );
+    // icon_theme.set_theme_name(Some("powpow"));
+    // icon_theme.add_search_path("/home/iancleary/Development/power-panel/src/icons/hicolor");
+
+    // in dev mode, relative to the path where `cargo run` is run from
+    icon_theme.add_search_path("src/icons/hicolor");
+
+    let mut names = icon_theme.icon_names();
+    names.sort();
+
+    // print theme icons
+    // println!("Icon names: {:?}", names);
+
+    let theme_name = icon_theme.theme_name();
+    println!("theme_name: {:?}", theme_name);
+
+    // let search_path = icon_theme.search_path();
+    // println!("search_path: {:?}", search_path);
+
+    let resource_path = icon_theme.resource_path();
+    println!("resource_path: {:?}", resource_path);
+}
+
 fn build_ui(app: &Application) {
-    // Create a button with label and margins
-    let button = Button::builder()
-        .label("Reboot now?")
-        .margin_top(12)
-        .margin_bottom(12)
-        .margin_start(12)
-        .margin_end(12)
-        .build();
+    // Create a button_1 with label and margins
+    let button_1 = Button::from_icon_name("switch-off-symbolic");
 
-    // Connect to "clicked" signal of `button`
-    button.connect_clicked(|button| {
-        // Set the label to "Hello World!" after the button has been clicked on
-        // button.set_label("Hello World!");
-
+    // Connect to "clicked" signal of `button_1`
+    button_1.connect_clicked(|_| {
         Command::new("sudo")
         .arg("reboot")
         .arg("now")
@@ -37,19 +71,10 @@ fn build_ui(app: &Application) {
         .expect("reboot command failed to start");
     });
 
-    let button2 = Button::builder()
-        .label("shutdown now?")
-        .margin_top(12)
-        .margin_bottom(12)
-        .margin_start(12)
-        .margin_end(12)
-        .build();
+    let button_2 = Button::from_icon_name("shutdown");
 
-    // Connect to "clicked" signal of `button`
-    button2.connect_clicked(|button2| {
-        // Set the label to "Hello World!" after the button has been clicked on
-        // button.set_label("Hello World!");
-
+    // Connect to "clicked" signal of `button_2`
+    button_2.connect_clicked(|_| {
         Command::new("sudo")
         .arg("shutdown")
         .arg("now")
@@ -57,9 +82,13 @@ fn build_ui(app: &Application) {
         .expect("shutdown command failed to start");
     });
 
+    button_1.add_css_class("restart");
+    button_2.add_css_class("shutdown");
+
+
     let hbox = gtk::Box::new(gtk::Orientation::Horizontal, 0);
-    hbox.append(&button);
-    hbox.append(&button2);
+    hbox.append(&button_1);
+    hbox.append(&button_2);
 
     // Create a window
     let window = ApplicationWindow::builder()

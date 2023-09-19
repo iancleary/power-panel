@@ -4,4 +4,4 @@ name = "power-panel"
 version = "0.1.0"
 
 [dependencies]
-gtk = { version = "0.7.2", package = "gtk4", features = ["v4_10"] }
+gtk = {version = "0.7.2", package = "gtk4", features = ["v4_10"]}
