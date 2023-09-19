@@ -60,7 +60,7 @@ fn load_icons() {
 
 fn build_ui(app: &Application) {
     // Create a button_1 with label and margins
-    let button_1 = Button::from_icon_name("switch-off-symbolic");
+    let button_1 = Button::from_icon_name("view-refresh-symbolic");
 
     // Connect to "clicked" signal of `button_1`
     button_1.connect_clicked(|_| {
@@ -71,7 +71,9 @@ fn build_ui(app: &Application) {
         .expect("reboot command failed to start");
     });
 
-    let button_2 = Button::from_icon_name("shutdown");
+    // let button_2 = Button::from_icon_name("window-close");
+    let button_2 = Button::from_icon_name("view-conceal-symbolic");
+
 
     // Connect to "clicked" signal of `button_2`
     button_2.connect_clicked(|_| {
