@@ -34,14 +34,38 @@ fn build_ui(app: &Application) {
         .arg("reboot")
         .arg("now")
         .spawn()
-        .expect("ls command failed to start");
+        .expect("reboot command failed to start");
     });
+
+    let button2 = Button::builder()
+        .label("shutdown now?")
+        .margin_top(12)
+        .margin_bottom(12)
+        .margin_start(12)
+        .margin_end(12)
+        .build();
+
+    // Connect to "clicked" signal of `button`
+    button2.connect_clicked(|button2| {
+        // Set the label to "Hello World!" after the button has been clicked on
+        // button.set_label("Hello World!");
+
+        Command::new("sudo")
+        .arg("shutdown")
+        .arg("now")
+        .spawn()
+        .expect("shutdown command failed to start");
+    });
+
+    let hbox = gtk::Box::new(gtk::Orientation::Horizontal, 0);
+    hbox.append(&button);
+    hbox.append(&button2);
 
     // Create a window
     let window = ApplicationWindow::builder()
         .application(app)
         .title("My GTK App")
-        .child(&button)
+        .child(&hbox)
         .build();
 
     // Present window
