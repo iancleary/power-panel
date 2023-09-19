@@ -39,7 +39,8 @@
         nativeBuildInputs = with pkgs; [
           pkg-config
           gtk-layer-shell
-          gtk3
+          base-devel
+          gtk4
         ];
       };
     in {
@@ -63,6 +64,7 @@
             rustup
             openssl
             pkg-config
+            gtk4
             cargo-deny
             cargo-edit
             cargo-watch

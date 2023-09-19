@@ -1,44 +1,42 @@
-use iced::Settings;
-use iced::widget::{Button, Column, Container, Text};
-use iced::Sandbox;
+use gtk::prelude::*;
+use gtk::{glib, Application, ApplicationWindow, Button};
 
-fn main() -> Result<(), iced::Error> {
-    Counter::run(Settings::default())
+const APP_ID: &str = "me.iancleary.power";
+
+fn main() -> glib::ExitCode {
+    // Create a new application
+    let app = Application::builder().application_id(APP_ID).build();
+
+    // Connect to "activate" signal of `app`
+    app.connect_activate(build_ui);
+
+    // Run the application
+    app.run()
 }
 
-struct Counter {
-    count: i32,
-}
+fn build_ui(app: &Application) {
+    // Create a button with label and margins
+    let button = Button::builder()
+        .label("Press me!")
+        .margin_top(12)
+        .margin_bottom(12)
+        .margin_start(12)
+        .margin_end(12)
+        .build();
 
-#[derive(Debug, Clone, Copy)]
-enum CounterMessage {
-    Increment,
-    Decrement,
-}
+    // Connect to "clicked" signal of `button`
+    button.connect_clicked(|button| {
+        // Set the label to "Hello World!" after the button has been clicked on
+        button.set_label("Hello World!");
+    });
 
-impl Sandbox for Counter {
-    type Message = CounterMessage;
+    // Create a window
+    let window = ApplicationWindow::builder()
+        .application(app)
+        .title("My GTK App")
+        .child(&button)
+        .build();
 
-    fn new() -> Self {
-        Counter { count: 0 }
-    }
-
-    fn title(&self) -> String {
-        String::from("Counter app")
-    }
-
-    fn update(&mut self, message: Self::Message) {
-        match message {
-            CounterMessage::Increment => self.count += 1,
-            CounterMessage::Decrement => self.count -= 1,
-        }
-    }
-
-    fn view(&self) -> iced::Element<Self::Message> {
-        let label = Text::new(format!("Count: {}", self.count));
-        let incr = Button::new("Increment").on_press(CounterMessage::Increment);
-        let decr = Button::new("Decrement").on_press(CounterMessage::Decrement);
-        let col = Column::new().push(incr).push(label).push(decr);
-        Container::new(col).center_x().center_y().width(iced::Length::Fill).height(iced::Length::Fill).into()
-    }
+    // Present window
+    window.present();
 }
