@@ -1,3 +1,4 @@
+use std::process::Command;
 use gtk::prelude::*;
 use gtk::{glib, Application, ApplicationWindow, Button};
 
@@ -17,7 +18,7 @@ fn main() -> glib::ExitCode {
 fn build_ui(app: &Application) {
     // Create a button with label and margins
     let button = Button::builder()
-        .label("Press me!")
+        .label("Reboot now?")
         .margin_top(12)
         .margin_bottom(12)
         .margin_start(12)
@@ -27,7 +28,13 @@ fn build_ui(app: &Application) {
     // Connect to "clicked" signal of `button`
     button.connect_clicked(|button| {
         // Set the label to "Hello World!" after the button has been clicked on
-        button.set_label("Hello World!");
+        // button.set_label("Hello World!");
+
+        Command::new("sudo")
+        .arg("reboot")
+        .arg("now")
+        .spawn()
+        .expect("ls command failed to start");
     });
 
     // Create a window
