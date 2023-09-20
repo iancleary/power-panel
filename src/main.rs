@@ -1,6 +1,7 @@
+use std::process; // for exit
 use std::process::Command;
 use gtk::prelude::*;
-use gtk::{glib, Application, ApplicationWindow, Button, CssProvider, IconTheme};
+use gtk::{glib, Application, ApplicationWindow, Button, CenterBox, CssProvider, IconTheme};
 use gtk::gdk::Display;
 
 const APP_ID: &str = "me.iancleary.powpow";
@@ -42,20 +43,20 @@ fn load_icons() {
     // in dev mode, relative to the path where `cargo run` is run from
     icon_theme.add_search_path("src/icons/hicolor");
 
-    let mut names = icon_theme.icon_names();
-    names.sort();
+    // let mut names = icon_theme.icon_names();
+    // names.sort();
 
     // print theme icons
     // println!("Icon names: {:?}", names);
 
-    let theme_name = icon_theme.theme_name();
-    println!("theme_name: {:?}", theme_name);
+    // let theme_name = icon_theme.theme_name();
+    // println!("theme_name: {:?}", theme_name);
 
     // let search_path = icon_theme.search_path();
     // println!("search_path: {:?}", search_path);
 
-    let resource_path = icon_theme.resource_path();
-    println!("resource_path: {:?}", resource_path);
+    // let resource_path = icon_theme.resource_path();
+    // println!("resource_path: {:?}", resource_path);
 }
 
 fn build_ui(app: &Application) {
@@ -72,8 +73,9 @@ fn build_ui(app: &Application) {
     });
 
     // let button_2 = Button::from_icon_name("window-close");
+    // let button_2 = Button::from_icon_name("view-conceal-symbolic");
     let button_2 = Button::from_icon_name("view-conceal-symbolic");
-
+    // let button_2 = Button::from_icon_name("switch-off-symbolic");
 
     // Connect to "clicked" signal of `button_2`
     button_2.connect_clicked(|_| {
@@ -84,13 +86,22 @@ fn build_ui(app: &Application) {
         .expect("shutdown command failed to start");
     });
 
-    button_1.add_css_class("restart");
-    button_2.add_css_class("shutdown");
+    let button_3 = Button::from_icon_name("window-close-symbolic");
+    // let button_2 = Button::from_icon_name("switch-off-symbolic");
 
+    // Connect to "clicked" signal of `button_2`
+    button_3.connect_clicked(|_| {
+        process::exit(1);
+    });
 
-    let hbox = gtk::Box::new(gtk::Orientation::Horizontal, 0);
-    hbox.append(&button_1);
-    hbox.append(&button_2);
+    button_1.add_css_class("destructive-action");
+    button_2.add_css_class("destructive-action");
+    button_3.add_css_class("suggested-action");
+
+    let hbox = CenterBox::new();
+    hbox.set_start_widget(Some(&button_1));
+    hbox.set_center_widget(Some(&button_2));
+    hbox.set_end_widget(Some(&button_3));
 
     // Create a window
     let window = ApplicationWindow::builder()

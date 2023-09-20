@@ -1,14 +1,18 @@
-button.restart {
+button {
   background-color: #000;
-  color: red;
+  color: white;
+  font-size: large;
+  padding: 15px 32px;
+  margin: 10px;
+  min-width: 200px;
 }
 
-button.shutdown {
-  background-color: #000;
+button#restart:hover {
+  background-color: #c90a0a;
   color: blue;
 }
 
-
 window {
   background-color: #000;
+  padding: 40px;
 }
