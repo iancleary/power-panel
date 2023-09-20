@@ -1,44 +1,115 @@
-use iced::Settings;
-use iced::widget::{Button, Column, Container, Text};
-use iced::Sandbox;
+use std::process; // for exit
+use std::process::Command;
+use gtk::prelude::*;
+use gtk::{glib, Application, ApplicationWindow, Button, CenterBox, CssProvider, IconTheme};
+use gtk::gdk::Display;
 
-fn main() -> Result<(), iced::Error> {
-    Counter::run(Settings::default())
+const APP_ID: &str = "me.iancleary.powpow";
+
+fn main() -> glib::ExitCode {
+    // Create a new application
+    let app = Application::builder().application_id(APP_ID).build();
+
+    // Connect to signals
+    app.connect_startup(|_| load_css());
+    app.connect_startup(|_| load_icons());
+    app.connect_activate(build_ui);
+
+    // Run the application
+    app.run()
 }
 
-struct Counter {
-    count: i32,
+fn load_css() {
+    // Load the CSS file and add it to the provider
+    let provider = CssProvider::new();
+    provider.load_from_data(include_str!("style.css"));
+
+    // Add the provider to the default screen
+    gtk::style_context_add_provider_for_display(
+        &Display::default().expect("Could not connect to a display."),
+        &provider,
+        gtk::STYLE_PROVIDER_PRIORITY_APPLICATION,
+    );
 }
 
-#[derive(Debug, Clone, Copy)]
-enum CounterMessage {
-    Increment,
-    Decrement,
+fn load_icons() {
+    // Load the icons into the icon theme
+    let icon_theme = IconTheme::for_display(
+        &Display::default().expect("Could not connect to a display.")
+    );
+    // icon_theme.set_theme_name(Some("powpow"));
+    // icon_theme.add_search_path("/home/iancleary/Development/power-panel/src/icons/hicolor");
+
+    // in dev mode, relative to the path where `cargo run` is run from
+    icon_theme.add_search_path("src/icons/hicolor");
+
+    // let mut names = icon_theme.icon_names();
+    // names.sort();
+
+    // print theme icons
+    // println!("Icon names: {:?}", names);
+
+    // let theme_name = icon_theme.theme_name();
+    // println!("theme_name: {:?}", theme_name);
+
+    // let search_path = icon_theme.search_path();
+    // println!("search_path: {:?}", search_path);
+
+    // let resource_path = icon_theme.resource_path();
+    // println!("resource_path: {:?}", resource_path);
 }
 
-impl Sandbox for Counter {
-    type Message = CounterMessage;
+fn build_ui(app: &Application) {
+    // Create a button_1 with label and margins
+    let button_1 = Button::from_icon_name("view-refresh-symbolic");
 
-    fn new() -> Self {
-        Counter { count: 0 }
-    }
+    // Connect to "clicked" signal of `button_1`
+    button_1.connect_clicked(|_| {
+        Command::new("sudo")
+        .arg("reboot")
+        .arg("now")
+        .spawn()
+        .expect("reboot command failed to start");
+    });
 
-    fn title(&self) -> String {
-        String::from("Counter app")
-    }
+    // let button_2 = Button::from_icon_name("window-close");
+    // let button_2 = Button::from_icon_name("view-conceal-symbolic");
+    let button_2 = Button::from_icon_name("view-conceal-symbolic");
+    // let button_2 = Button::from_icon_name("switch-off-symbolic");
 
-    fn update(&mut self, message: Self::Message) {
-        match message {
-            CounterMessage::Increment => self.count += 1,
-            CounterMessage::Decrement => self.count -= 1,
-        }
-    }
+    // Connect to "clicked" signal of `button_2`
+    button_2.connect_clicked(|_| {
+        Command::new("sudo")
+        .arg("shutdown")
+        .arg("now")
+        .spawn()
+        .expect("shutdown command failed to start");
+    });
 
-    fn view(&self) -> iced::Element<Self::Message> {
-        let label = Text::new(format!("Count: {}", self.count));
-        let incr = Button::new("Increment").on_press(CounterMessage::Increment);
-        let decr = Button::new("Decrement").on_press(CounterMessage::Decrement);
-        let col = Column::new().push(incr).push(label).push(decr);
-        Container::new(col).center_x().center_y().width(iced::Length::Fill).height(iced::Length::Fill).into()
-    }
+    let button_3 = Button::from_icon_name("window-close-symbolic");
+    // let button_2 = Button::from_icon_name("switch-off-symbolic");
+
+    // Connect to "clicked" signal of `button_2`
+    button_3.connect_clicked(|_| {
+        process::exit(1);
+    });
+
+    button_1.add_css_class("destructive-action");
+    button_2.add_css_class("destructive-action");
+    button_3.add_css_class("suggested-action");
+
+    let hbox = CenterBox::new();
+    hbox.set_start_widget(Some(&button_1));
+    hbox.set_center_widget(Some(&button_2));
+    hbox.set_end_widget(Some(&button_3));
+
+    // Create a window
+    let window = ApplicationWindow::builder()
+        .application(app)
+        .title("My GTK App")
+        .child(&hbox)
+        .build();
+
+    // Present window
+    window.present();
 }
