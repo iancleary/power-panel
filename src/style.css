@@ -7,11 +7,6 @@ button {
   min-width: 200px;
 }
 
-button#restart:hover {
-  background-color: #c90a0a;
-  color: blue;
-}
-
 window {
   background-color: #000;
   padding: 40px;
