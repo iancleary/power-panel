@@ -2,3 +2,4 @@
 .devbox/
 target/
 .direnv/
+result/
