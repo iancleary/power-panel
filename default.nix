@@ -8,6 +8,7 @@ pkgs.rustPlatform.buildRustPackage rec {
   cargoLock.lockFile = ./Cargo.lock;
   src = pkgs.lib.cleanSource ./.;
 
+  # https://nixos.wiki/wiki/Packaging/Quirks_and_Caveats
   nativeBuildInputs = with pkgs; [
     pkg-config
   ];
@@ -16,9 +17,6 @@ pkgs.rustPlatform.buildRustPackage rec {
     wayland
     gtk4
   ];
-
-  # LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath buildInputs;
-
 }
 
 

@@ -10,6 +10,4 @@ pkgs.mkShell {
     just         # Task runner
     gtk4         # GUI toolkit
   ];
-
-  # LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath buildInputs;
 }
