@@ -2,4 +2,4 @@
 .devbox/
 target/
 .direnv/
-result/
+result
