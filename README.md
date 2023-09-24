@@ -25,7 +25,6 @@ let
   # https://nixos.wiki/index.php?title=FAQ&oldid=3528#How_can_I_install_a_package_from_unstable_while_remaining_on_the_stable_channel.3F
   pkgs-unstable = (import inputs.nixpkgs-unstable) {
     system = "x86_64-linux";
-    config.allowUnfree = true;
   };
 in
 {
@@ -71,7 +70,7 @@ in
 }
 ```
 
-For my use case, I integrated this file into my nixos-config this way; [checkout the files linked here](https://github.com/iancleary/nixos-config/commit/83a508afa45e4e07d8dee010abf43a877eee7cfe) to bind to a keyboard shortcut with [Hyprland](https://hyprland.org/).  
+For my use case, I integrated this file into my nixos-config this way; [checkout the files linked here](https://github.com/iancleary/nixos-config/commit/83a508afa45e4e07d8dee010abf43a877eee7cfe) to bind to a keyboard shortcut with [Hyprland](https://hyprland.org/).
 
 ## Why does this exist
 
