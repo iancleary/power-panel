@@ -1,2 +1,2 @@
-pub mod icons;
 pub mod css;
+pub mod icons;

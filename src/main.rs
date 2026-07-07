@@ -1,7 +1,7 @@
-use std::process; // for exit
-use std::process::Command;
 use gtk::prelude::*;
 use gtk::{glib, Application, ApplicationWindow, Button, CenterBox};
+use std::process; // for exit
+use std::process::Command;
 
 use power_panel::css::load_css;
 // use power_panel::icons::load_icons;
@@ -21,8 +21,6 @@ fn main() -> glib::ExitCode {
     app.run()
 }
 
-
-
 fn build_ui(app: &Application) {
     // Create a button_1 with label and margins
     let button_1 = Button::from_icon_name("view-refresh-symbolic");
@@ -30,10 +28,10 @@ fn build_ui(app: &Application) {
     // Connect to "clicked" signal of `button_1`
     button_1.connect_clicked(|_| {
         Command::new("sudo")
-        .arg("reboot")
-        .arg("now")
-        .spawn()
-        .expect("reboot command failed to start");
+            .arg("reboot")
+            .arg("now")
+            .spawn()
+            .expect("reboot command failed to start");
     });
 
     // let button_2 = Button::from_icon_name("window-close");
@@ -44,10 +42,10 @@ fn build_ui(app: &Application) {
     // Connect to "clicked" signal of `button_2`
     button_2.connect_clicked(|_| {
         Command::new("sudo")
-        .arg("shutdown")
-        .arg("now")
-        .spawn()
-        .expect("shutdown command failed to start");
+            .arg("shutdown")
+            .arg("now")
+            .spawn()
+            .expect("shutdown command failed to start");
     });
 
     let button_3 = Button::from_icon_name("window-close-symbolic");

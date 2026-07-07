@@ -1,15 +1,43 @@
-# list recipes
-help:
-  just --list
+set shell := ["bash", "-eu", "-o", "pipefail", "-c"]
 
-develop:
-  nix develop -c zsh
+default:
+    @just --list
 
-run:
-  cargo run
+# format the code
+fmt:
+    cargo fmt --all
 
-release:
-  cargo build --release
+# check formatting without writing changes
+fmt-check:
+    cargo fmt --all -- --check
 
+# lint the code
+lint:
+    cargo clippy --all-targets --all-features -- -D warnings
+
+# run tests
+test:
+    cargo test --all-targets --all-features
+
+# build the crate
 build:
-  nix build
+    cargo build --all-targets
+
+# build the crate for release
+release:
+    cargo build --release
+
+# run the app
+run:
+    cargo run
+
+# enter the Nix development shell
+develop:
+    nix develop -c zsh
+
+# run checks and build
+ci: fmt-check lint test build
+
+# build with Nix
+nix-build:
+    nix build
