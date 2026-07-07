@@ -1,5 +1,7 @@
 # power-panel
 
+[![CI](https://github.com/iancleary/power-panel/actions/workflows/ci.yml/badge.svg)](https://github.com/iancleary/power-panel/actions/workflows/ci.yml)
+
 ## Description
 
 Power Panel for NixOS, a reboot, shutdown GUI used with Hyprland.
@@ -78,3 +80,15 @@ For my use case, I integrated this file into my nixos-config this way; [checkout
 I created this to learn and allow myself to reboot or shutdown quickly within a Hyprland windowing manager session. I also use `waybar` and it doesn't provide a power menu (like GNOME or KDE do, etc.).
 
 It was a fun way to learn nix and rust packaging as well :).
+
+## Development
+
+This repository includes a `justfile` for common local checks:
+
+```shell
+just fmt-check
+just lint
+just test
+just build
+just ci
+```

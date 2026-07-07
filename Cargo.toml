@@ -1,6 +1,11 @@
 [package]
+authors = ["Ian Cleary <iancleary@hey.com>"]
+description = "A small GTK power menu for NixOS and Hyprland sessions"
 edition = "2021"
+homepage = "https://github.com/iancleary/power-panel"
+license = "MIT"
 name = "power-panel"
+repository = "https://github.com/iancleary/power-panel"
 version = "0.1.0"
 
 [dependencies]
