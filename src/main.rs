@@ -30,8 +30,8 @@ fn build_ui(app: &Application) {
         Command::new("sudo")
             .arg("reboot")
             .arg("now")
-            .spawn()
-            .expect("reboot command failed to start");
+            .status()
+            .expect("reboot command failed");
     });
 
     // let button_2 = Button::from_icon_name("window-close");
@@ -44,8 +44,8 @@ fn build_ui(app: &Application) {
         Command::new("sudo")
             .arg("shutdown")
             .arg("now")
-            .spawn()
-            .expect("shutdown command failed to start");
+            .status()
+            .expect("shutdown command failed");
     });
 
     let button_3 = Button::from_icon_name("window-close-symbolic");
